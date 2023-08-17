@@ -92,14 +92,15 @@ figure(7), RR_bode(F_LPF2_damped_tr)
 
 % Second-order low-pass LC filter: Solve for Vo as a function of Vi
 % x={I_L,Ic,Irl,Vo}  <-- unknown vector
-A  =[ 1  -1 1  0  0  0;    % I_L - Ic -Irl = 0
-       1  0  0 -1  0  0;    % L*s*I_L + Vo = Vi
-       0  L*s 0  0  1  0;  % C*s*Vo - Ic = 0
-     - R*d   0    0   0   0   1;
-      0   0  (-1/(C*s))  0  0  0;
-      0   0   1   0   0  -C*d]   % Vo - Irl*R = 0
-b  =[ 0; 0; -Vo; Vo; Vo; 0];
+A  =[ 1  -1 -1  0  0  0;    % I_L - Ic -Irl = 0
+       0  1  0  0  -C*s  0;    % L*s*I_L + Vo = Vi
+       L*s  0  0  0  1  0;  % C*s*Vo - Ic = 0
+      0   0    1   -1   0   0;
+      0   0   0   1   0   -s*C*d;
+      0   0   -R*d   0    1 -1]   % Vo - Irl*R = 0
+b  =[ 0; 0; Vi; 0; 0; 0];
 x=A\b; Vo_LPF4_damped_tr=simplify(x(5))
+
 
 
 
